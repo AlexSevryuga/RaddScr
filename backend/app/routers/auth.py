@@ -4,7 +4,14 @@ from datetime import timedelta
 from .. import models, schemas, auth
 from ..database import get_db
 from ..config import settings
-from ..email import send_welcome_email
+
+# Try to import optional email
+try:
+    from ..email import send_welcome_email
+    EMAIL_AVAILABLE = True
+except ImportError:
+    EMAIL_AVAILABLE = False
+    send_welcome_email = None
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -34,11 +41,12 @@ async def register(user_data: schemas.UserRegister, db: Session = Depends(get_db
     db.refresh(new_user)
     
     # Send welcome email (fire and forget)
-    try:
-        await send_welcome_email(new_user.email, new_user.full_name)
-    except Exception as e:
-        # Log error but don't fail registration
-        print(f"Failed to send welcome email: {e}")
+    if EMAIL_AVAILABLE and send_welcome_email:
+        try:
+            await send_welcome_email(new_user.email, new_user.full_name)
+        except Exception as e:
+            # Log error but don't fail registration
+            print(f"Failed to send welcome email: {e}")
     
     return new_user
 

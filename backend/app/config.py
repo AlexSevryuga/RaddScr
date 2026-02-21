@@ -1,46 +1,31 @@
-from pydantic_settings import BaseSettings
+import os
 from typing import Optional
 
-
-class Settings(BaseSettings):
+class Settings:
+    """Simple settings without required fields"""
     # Database
-    DATABASE_URL: str
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "")
     
     # JWT
-    SECRET_KEY: str
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "default-secret-key-change-in-production")
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    
-    # Stripe
-    STRIPE_SECRET_KEY: Optional[str] = None
-    STRIPE_PUBLISHABLE_KEY: Optional[str] = None
-    STRIPE_WEBHOOK_SECRET: Optional[str] = None
-    STRIPE_PRICE_ID_STARTER: Optional[str] = None
-    STRIPE_PRICE_ID_PRO: Optional[str] = None
-    STRIPE_PRICE_ID_ENTERPRISE: Optional[str] = None
-    
-    # Email
-    RESEND_API_KEY: Optional[str] = None
-    FROM_EMAIL: Optional[str] = "noreply@example.com"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "43200"))
     
     # Redis
-    REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     
     # URLs
-    FRONTEND_URL: str = "http://localhost:3000"
-    BACKEND_URL: str = "http://localhost:8000"
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    BACKEND_URL: str = os.getenv("BACKEND_URL", "http://localhost:8000")
     
-    # Validation APIs
-    REDDIT_CLIENT_ID: Optional[str] = None
-    REDDIT_CLIENT_SECRET: Optional[str] = None
-    REDDIT_USER_AGENT: Optional[str] = None
-    TWITTER_BEARER_TOKEN: Optional[str] = None
-    LINKEDIN_EMAIL: Optional[str] = None
-    LINKEDIN_PASSWORD: Optional[str] = None
+    # Optional: Stripe
+    STRIPE_SECRET_KEY: Optional[str] = os.getenv("STRIPE_SECRET_KEY")
+    STRIPE_PUBLISHABLE_KEY: Optional[str] = os.getenv("STRIPE_PUBLISHABLE_KEY")
+    STRIPE_WEBHOOK_SECRET: Optional[str] = os.getenv("STRIPE_WEBHOOK_SECRET")
     
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    # Optional: Email
+    RESEND_API_KEY: Optional[str] = os.getenv("RESEND_API_KEY")
+    FROM_EMAIL: str = os.getenv("FROM_EMAIL", "noreply@example.com")
 
 
 settings = Settings()

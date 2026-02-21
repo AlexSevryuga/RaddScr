@@ -1,0 +1,63 @@
+services:
+  # Backend API
+  - type: web
+    name: raddscr
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: raddscr-db
+          property: connectionString
+      - key: REDIS_URL
+        fromDatabase:
+          name: raddscr-redis
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 43200
+      - key: FRONTEND_URL
+        value: http://localhost:3000
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /health
+
+  # Celery Worker (optional, can be enabled later)
+  # - type: worker
+  #   name: raddscr-worker
+  #   env: python
+  #   region: oregon
+  #   plan: free
+  #   branch: main
+  #   buildCommand: "cd backend && pip install -r requirements.txt"
+  #   startCommand: "cd backend && celery -A app.celery_app worker --loglevel=info"
+  #   envVars:
+  #     - key: DATABASE_URL
+  #       fromDatabase:
+  #         name: raddscr-db
+  #         property: connectionString
+  #     - key: REDIS_URL
+  #       fromDatabase:
+  #         name: raddscr-redis
+  #         property: connectionString
+
+databases:
+  # PostgreSQL
+  - name: raddscr-db
+    databaseName: raddscr
+    region: oregon
+    plan: free
+    ipAllowList: []
+
+  # Redis
+  - name: raddscr-redis
+    region: oregon
+    plan: free
+    ipAllowList: []

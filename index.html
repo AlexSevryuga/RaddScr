@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit SaaS Validator — Валидация идей за 48 часов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Reddit Validator</div>
+                <ul class="nav-links">
+                    <li><a href="#features">Возможности</a></li>
+                    <li><a href="#how-it-works">Как работает</a></li>
+                    <li><a href="#pricing">Цены</a></li>
+                    <li><a href="#" style="color: var(--primary); font-weight: 600;">Войти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">🚀 Web-Platform • Ready-to-Use • No Setup Required</div>
+                <h1>
+                    Валидируйте<br>
+                    <span class="gradient-text">SaaS идеи</span><br>
+                    за 48 часов
+                </h1>
+                <p class="hero-subtitle">
+                    Web-платформа для анализа Reddit, Twitter/X и LinkedIn вместо $500-2000 консалтинга. 
+                    Просто введите идею — получите полный анализ и рекомендации.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 16px; margin-top: 10px;">
+                    ⚡ Без установки • 💻 Web-интерфейс • 📊 Готовые отчёты • 🎯 Из коробки
+                </p>
+                <div class="cta-group">
+                    <a href="#pricing" class="btn btn-primary">Попробовать бесплатно</a>
+                    <a href="#how-it-works" class="btn btn-secondary">Как это работает</a>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Platforms vs 1 (GummySearch)</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">48h</span>
+                        <span class="stat-label">vs 2-3 недель вручную</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">$29</span>
+                        <span class="stat-label">vs $49-199 конкуренты</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">42%</span>
+                        <span class="stat-label">Стартапов умирают без валидации</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Всё включено в платформу</h2>
+                    <p class="section-subtitle">Готовое решение для полной валидации вашей идеи</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3 class="feature-title">Reddit Scraper</h3>
+                        <p class="feature-description">
+                            Автоматический сбор постов из любых subreddit'ов. Анализ engagement, 
+                            частоты упоминаний и трендов. Экспорт в CSV для дальнейшего анализа.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🐦</div>
+                        <h3 class="feature-title">Twitter/X Integration</h3>
+                        <p class="feature-description">
+                            Сбор и анализ твитов по ключевым словам. Поиск трендов, 
+                            анализ хештегов и упоминаний. Отслеживание thought leaders и конкурентов.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💼</div>
+                        <h3 class="feature-title">LinkedIn Scraping</h3>
+                        <p class="feature-description">
+                            Анализ B2B аудитории через LinkedIn. Поиск профессионалов по должностям,
+                            сбор постов компаний и thought leaders. Идеально для B2B SaaS.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">😫</div>
+                        <h3 class="feature-title">Pain Points Detection</h3>
+                        <p class="feature-description">
+                            Автоматическое выявление проблем пользователей на всех платформах. 
+                            Поиск ключевых слов "frustrated", "struggling" и анализ контекста.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🏆</div>
+                        <h3 class="feature-title">Competitor Analysis</h3>
+                        <p class="feature-description">
+                            Находит упоминания конкурентов на всех платформах. 
+                            Анализирует негативные отзывы и gap'ы в существующих решениях.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Multi-Platform Scoring</h3>
+                        <p class="feature-description">
+                            Объединённая оценка идеи на основе данных с Reddit, Twitter и LinkedIn.
+                            Автоматический скоринг от 0 до 100 с конкретными рекомендациями.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Как это работает</h2>
+                    <p class="section-subtitle">Простой процесс — от идеи до решения за 48 часов</p>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Создайте аккаунт</h3>
+                        <p class="step-description">
+                            Быстрая регистрация за 30 секунд. 
+                            Никакой установки, настройки API или технических знаний не требуется.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Опишите вашу идею</h3>
+                        <p class="step-description">
+                            Введите название и описание вашей SaaS идеи в web-интерфейс. 
+                            Платформа автоматически начнёт анализ.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Получите анализ за 48 часов</h3>
+                        <p class="step-description">
+                            Автоматический сбор данных из Reddit, Twitter и LinkedIn. 
+                            AI анализирует pain points, конкурентов и рыночный спрос.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Примите решение</h3>
+                        <p class="step-description">
+                            Получите scoring 0-100, детальный отчёт и чёткие рекомендации: 
+                            строить, pivot или отказаться от идеи.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pricing" id="pricing">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Решение для любой команды</h2>
+                    <p class="section-subtitle">От соло-основателей до корпоративных инновационных команд</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <!-- Free Tier -->
+                    <div class="pricing-card">
+                        <div class="pricing-badge">Community</div>
+                        <h3>Free</h3>
+                        <div class="price">$0</div>
+                        <p class="price-label">Для indie hackers, студентов</p>
+
+                        <ul class="features-list">
+                            <li>1 идея в месяц</li>
+                            <li>Анализ 3 платформ (Reddit, Twitter, LinkedIn)</li>
+                            <li>Базовый отчёт с рекомендациями</li>
+                            <li>Scoring 0-100</li>
+                            <li>Pain points анализ</li>
+                            <li>Email поддержка</li>
+                            <li>Web-интерфейс</li>
+                        </ul>
+
+                        <a href="#pricing" class="btn btn-secondary" style="width: 100%; margin-top: 2rem;">
+                            Начать бесплатно
+                        </a>
+                    </div>
+
+                    <!-- Premium Tier -->
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge popular">Популярный</div>
+                        <h3>Premium</h3>
+                        <div class="price">$29<span style="font-size: 20px; font-weight: 400;">/мес</span></div>
+                        <p class="price-label">Для стартапов, консультантов</p>
+
+                        <ul class="features-list">
+                            <li>Всё из Free +</li>
+                            <li>Неограниченное количество идей</li>
+                            <li>Детальные отчёты с графиками</li>
+                            <li>AI инсайты и рекомендации</li>
+                            <li>Отслеживание конкурентов</li>
+                            <li>Автоматические email-отчёты</li>
+                            <li>Приоритетная поддержка (24h)</li>
+                            <li>Экспорт в PDF</li>
+                        </ul>
+
+                        <a href="#pricing" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">
+                            Попробовать 14 дней бесплатно
+                        </a>
+                    </div>
+
+                    <!-- Enterprise Tier -->
+                    <div class="pricing-card">
+                        <div class="pricing-badge">Enterprise</div>
+                        <h3>Enterprise</h3>
+                        <div class="price">Custom</div>
+                        <p class="price-label">Для команд, акселераторов, корпораций</p>
+
+                        <ul class="features-list">
+                            <li>Всё из Premium +</li>
+                            <li>Совместная работа команды</li>
+                            <li>Индивидуальные интеграции</li>
+                            <li>Брендирование под вашу компанию</li>
+                            <li>Выделенный менеджер поддержки</li>
+                            <li>Обучение команды</li>
+                            <li>SLA с гарантией uptime</li>
+                            <li>Приватный инстанс (опционально)</li>
+                        </ul>
+
+                        <a href="mailto:hello@reddit-saas-validator.com" class="btn btn-secondary" style="width: 100%; margin-top: 2rem;">
+                            Обсудить условия
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Comparison with competitors -->
+                <div style="margin-top: 60px; text-align: center;">
+                    <p style="color: var(--text-secondary); font-size: 14px;">
+                        🎯 <strong>vs GummySearch</strong> ($49-199/мес, только Reddit) • 
+                        <strong>vs SparkToro</strong> ($50-225/мес, для маркетологов) • 
+                        <strong>vs Answer The Public</strong> ($99-199/мес, только keywords)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="comparison-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Почему Reddit SaaS Validator?</h2>
+                    <p class="section-subtitle">Сравнение с конкурентами</p>
+                </div>
+
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Функция</th>
+                                <th>Reddit Validator</th>
+                                <th>GummySearch</th>
+                                <th>SparkToro</th>
+                                <th>Manual Research</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Платформы</strong></td>
+                                <td>✅ Reddit + Twitter + LinkedIn</td>
+                                <td>Reddit only</td>
+                                <td>Twitter + Web</td>
+                                <td>Всё вручную</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Цена</strong></td>
+                                <td>$0 - $29/мес</td>
+                                <td>$49 - $199/мес</td>
+                                <td>$50 - $225/мес</td>
+                                <td>$500-2000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Время</strong></td>
+                                <td>48 часов</td>
+                                <td>1-2 дня</td>
+                                <td>1-2 дня</td>
+                                <td>2-3 недели</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Validation Framework</strong></td>
+                                <td>✅ Встроен</td>
+                                <td>❌ Нет</td>
+                                <td>❌ Нет</td>
+                                <td>❌ Нет</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Open-Source</strong></td>
+                                <td>✅ Да</td>
+                                <td>❌ Нет</td>
+                                <td>❌ Нет</td>
+                                <td>N/A</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Для кого</strong></td>
+                                <td>Все founders & teams</td>
+                                <td>SMB только</td>
+                                <td>Маркетологи только</td>
+                                <td>Все (долго)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>API Access</strong></td>
+                                <td>✅ Premium</td>
+                                <td>❌ Нет</td>
+                                <td>✅ Да</td>
+                                <td>N/A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section style="padding: 80px 0;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Для кого это решение?</h2>
+                    <p class="section-subtitle">Валидация для любой стадии и команды</p>
+                </div>
+
+                <div class="features-grid" style="margin-top: 50px;">
+                    <div class="feature-card">
+                        <div class="feature-icon">👤</div>
+                        <h3 class="feature-title">Indie Hackers</h3>
+                        <p class="feature-description">
+                            Соло-основатели, тестирующие идеи до написания кода. 
+                            Быстрая валидация без бюджета на research.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3 class="feature-title">Стартапы (Pre-seed/Seed)</h3>
+                        <p class="feature-description">
+                            Команды 2-5 человек, ищущие product-market fit. 
+                            Данные для pitch deck и investor talks.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎓</div>
+                        <h3 class="feature-title">Акселераторы</h3>
+                        <p class="feature-description">
+                            Y Combinator, Techstars и другие программы. 
+                            Стандартизированная валидация для портфеля.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💼</div>
+                        <h3 class="feature-title">Консультанты</h3>
+                        <p class="feature-description">
+                            Product и strategy консультанты. 
+                            Инструмент для клиентских проектов.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🏢</div>
+                        <h3 class="feature-title">Корпоративные инновации</h3>
+                        <p class="feature-description">
+                            Innovation labs крупных компаний. 
+                            Быстрая валидация internal ventures.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">Product Teams</h3>
+                        <p class="feature-description">
+                            PM и product designers в существующих компаниях. 
+                            Валидация новых фич и направлений.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof -->
+        <section style="padding: 60px 0; background: rgba(30, 41, 59, 0.3);">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Trusted by teams worldwide</h2>
+                    <p class="section-subtitle">От indie hackers до Fortune 500</p>
+                </div>
+                
+                <div style="display: flex; justify-content: center; gap: 60px; margin-top: 40px; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">10K+</div>
+                        <div style="color: var(--text-secondary); margin-top: 5px;">Downloads</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">1K+</div>
+                        <div style="color: var(--text-secondary); margin-top: 5px;">GitHub Stars</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">500+</div>
+                        <div style="color: var(--text-secondary); margin-top: 5px;">Validated Ideas</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Продукт</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Возможности</a></li>
+                        <li><a href="#how-it-works">Как работает</a></li>
+                        <li><a href="#pricing">Цены</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Поддержка</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Live Chat</a></li>
+                        <li><a href="#">Email Support</a></li>
+                        <li><a href="#">Статус системы</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Компания</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Карьера</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Легальное</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Условия использования</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                        <li><a href="#">GDPR</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Reddit SaaS Validator • Web-Platform for Idea Validation • Built with ❤️ for founders</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

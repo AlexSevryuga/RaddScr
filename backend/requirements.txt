@@ -1,0 +1,35 @@
+# Core
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-dotenv==1.0.0
+
+# Database
+sqlalchemy==2.0.25
+alembic==1.13.1
+psycopg2-binary==2.9.9
+
+# Auth
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Payments
+stripe==7.11.0
+
+# Email
+resend==0.7.0
+
+# Background tasks
+celery==5.3.6
+redis==5.0.1
+
+# Existing validation tools
+praw==7.7.1
+tweepy==4.14.0
+linkedin-api==2.2.0
+pandas==2.1.4
+
+# Utils
+httpx==0.26.0
+pydantic==2.5.3
+pydantic-settings==2.1.0

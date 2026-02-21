@@ -1,0 +1,26 @@
+# Core dependencies
+praw==7.7.1  # Reddit API
+pandas==2.1.4
+requests==2.31.0
+
+# Twitter/X API
+tweepy==4.14.0
+
+# LinkedIn scraping
+linkedin-api==2.2.0
+selenium==4.16.0
+webdriver-manager==4.0.1
+
+# Data analysis
+numpy==1.26.2
+matplotlib==3.8.2
+seaborn==0.13.0
+
+# NLP for sentiment analysis
+textblob==0.17.1
+nltk==3.8.1
+
+# Utilities
+python-dotenv==1.0.0
+colorama==0.4.6
+tqdm==4.66.1

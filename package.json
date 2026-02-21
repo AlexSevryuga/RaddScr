@@ -1,0 +1,23 @@
+{
+  "name": "reddit-saas-validator",
+  "version": "1.0.0",
+  "description": "Multiplatform SaaS idea validation tool",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "saas",
+    "validation",
+    "reddit",
+    "twitter",
+    "linkedin",
+    "scraping"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}

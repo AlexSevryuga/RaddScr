@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit SaaS Validator — Валидация идей за 48 часов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-orange: #FF6B35;
+            --deep-purple: #1A0B2E;
+            --electric-blue: #00E5FF;
+            --warning-yellow: #FFE66D;
+            --success-green: #06FFA5;
+            --bg-dark: #0A0118;
+            --bg-card: #150828;
+            --text-primary: #FFFFFF;
+            --text-muted: #B4A7D6;
+            --border-glow: rgba(0, 229, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 90%, rgba(6, 255, 165, 0.1) 0%, transparent 50%);
+            animation: drift 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(1deg); }
+            66% { transform: translate(-20px, 20px) rotate(-1deg); }
+        }
+
+        /* Noise texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 100;
+            mix-blend-mode: overlay;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(10, 1, 24, 0.8);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--neon-orange), var(--electric-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--electric-blue);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-blue);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid var(--electric-blue);
+            border-radius: 50px;
+            color: var(--electric-blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 229, 255, 0.5); }
+        }
+
+        h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--neon-orange), var(--electric-blue), var(--success-green));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 5s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'DM Sans', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon-orange), #FF8B5E);
+            color: white;
+            box-shadow: 0 10px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(255, 107, 53, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--electric-blue);
+            border: 2px solid var(--electric-blue);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--electric-blue);
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+        }
+
+        .stat-number {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--neon-orange), var(--electric-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--electric-blue);
+            box-shadow: 0 20px 60px rgba(0, 229, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--neon-orange), var(--electric-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Code Preview Section */
+        .code-preview {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(21, 8, 40, 0.5) 100%);
+        }
+
+        .terminal {
+            background: #0D0221;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            margin-top: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 229, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: rgba(0, 229, 255, 0.05);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #FF5F56; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green { background: #27C93F; }
+
+        .terminal-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.75rem;
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.1s; }
+        .terminal-line:nth-child(2) { animation-delay: 0.2s; }
+        .terminal-line:nth-child(3) { animation-delay: 0.3s; }
+        .terminal-line:nth-child(4) { animation-delay: 0.4s; }
+        .terminal-line:nth-child(5) { animation-delay: 0.5s; }
+        .terminal-line:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                transform: translateY(10px);
+            }
+        }
+
+        .prompt { color: var(--success-green); }
+        .command { color: var(--electric-blue); }
+        .comment { color: var(--text-muted); }
+        .output { color: var(--neon-orange); }
+        .success { color: var(--success-green); }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 0;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--neon-orange), var(--electric-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-description {
+            color: var(--text-muted);
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, rgba(21, 8, 40, 0.5) 0%, transparent 100%);
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 2px solid var(--neon-orange);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            margin: 3rem auto 0;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(255, 107, 53, 0.3);
+        }
+
+        .price {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--neon-orange), var(--electric-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+        }
+
+        .price-label {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+        }
+
+        .features-list {
+            list-style: none;
+            text-align: left;
+            margin: 2rem 0;
+        }
+
+        .features-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--success-green);
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--electric-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Cursor Effect */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Reddit Validator</div>
+                <ul class="nav-links">
+                    <li><a href="#features">Возможности</a></li>
+                    <li><a href="#how-it-works">Как работает</a></li>
+                    <li><a href="#pricing">Цена</a></li>
+                    <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">🚀 Open Source • Multi-Platform • Free Forever</div>
+                <h1>
+                    Валидируйте<br>
+                    <span class="gradient-text">SaaS идеи</span><br>
+                    за 48 часов
+                </h1>
+                <p class="hero-subtitle">
+                    Мультиплатформенный анализ Reddit, Twitter/X и LinkedIn для поиска реальных проблем. 
+                    Узнайте, стоит ли строить ваш продукт, ДО того как напишете первую строку кода.
+                </p>
+                <div class="cta-group">
+                    <a href="#" class="btn btn-primary">Скачать инструмент</a>
+                    <a href="#how-it-works" class="btn btn-secondary">Посмотреть демо</a>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Platforms Supported</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">48h</span>
+                        <span class="stat-label">Validation time</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">8</span>
+                        <span class="stat-label">Analysis scripts</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">0₽</span>
+                        <span class="stat-label">Completely free</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Всё, что нужно для валидации</h2>
+                    <p class="section-subtitle">Комплексный инструментарий для исследования рынка и анализа спроса</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3 class="feature-title">Reddit Scraper</h3>
+                        <p class="feature-description">
+                            Автоматический сбор постов из любых subreddit'ов. Анализ engagement, 
+                            частоты упоминаний и трендов. Экспорт в CSV для дальнейшего анализа.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🐦</div>
+                        <h3 class="feature-title">Twitter/X Integration</h3>
+                        <p class="feature-description">
+                            Сбор и анализ твитов по ключевым словам. Поиск трендов, 
+                            анализ хештегов и упоминаний. Отслеживание thought leaders и конкурентов.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💼</div>
+                        <h3 class="feature-title">LinkedIn Scraping</h3>
+                        <p class="feature-description">
+                            Анализ B2B аудитории через LinkedIn. Поиск профессионалов по должностям,
+                            сбор постов компаний и thought leaders. Идеально для B2B SaaS.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">😫</div>
+                        <h3 class="feature-title">Pain Points Detection</h3>
+                        <p class="feature-description">
+                            Автоматическое выявление проблем пользователей на всех платформах. 
+                            Поиск ключевых слов "frustrated", "struggling" и анализ контекста.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🏆</div>
+                        <h3 class="feature-title">Competitor Analysis</h3>
+                        <p class="feature-description">
+                            Находит упоминания конкурентов на всех платформах. 
+                            Анализирует негативные отзывы и gap'ы в существующих решениях.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Multi-Platform Scoring</h3>
+                        <p class="feature-description">
+                            Объединённая оценка идеи на основе данных с Reddit, Twitter и LinkedIn.
+                            Автоматический скоринг от 0 до 100 с конкретными рекомендациями.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="code-preview" id="demo">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Начните за 3 команды</h2>
+                    <p class="section-subtitle">Простая установка и использование</p>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-dot dot-red"></span>
+                        <span class="terminal-dot dot-yellow"></span>
+                        <span class="terminal-dot dot-green"></span>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="terminal-line">
+                            <span class="comment"># Установка зависимостей</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span> <span class="command">pip install -r requirements_multiplatform.txt</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="comment"># Настройка credentials (интерактивно)</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span> <span class="command">python quick_start.py</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="comment"># Мультиплатформенная валидация (Reddit + Twitter + LinkedIn)</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span> <span class="command">python multiplatform_validator.py</span>
+                        </div>
+                        <div class="terminal-line" style="margin-top: 1rem;">
+                            <span class="output">📊 ОБЪЕДИНЕННЫЙ АНАЛИЗ</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="comment">Platform    Posts  Pain Points</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Reddit        156           45</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Twitter       234           67</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">LinkedIn       48           21</span>
+                        </div>
+                        <div class="terminal-line" style="margin-top: 0.5rem;">
+                            <span class="success">🟢 ОТЛИЧНЫЙ ПОТЕНЦИАЛ (88/100)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Как это работает</h2>
+                    <p class="section-subtitle">Трёхэтапная система валидации SaaS идей</p>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Reddit Research</h3>
+                        <p class="step-description">
+                            Автоматический сбор и анализ постов из релевантных subreddit'ов. 
+                            Поиск упоминаний проблемы, анализ engagement.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Automated Scoring</h3>
+                        <p class="step-description">
+                            Оценка идеи по 5 метрикам: объём данных, вовлеченность, 
+                            интенсивность боли, частота и конкуренция.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Validation Framework</h3>
+                        <p class="step-description">
+                            Следуйте пошаговому плану: проблемные интервью, smoke test, 
+                            MVP. Чёткие критерии GO/NO-GO.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Decision Point</h3>
+                        <p class="step-description">
+                            Получите конкретные рекомендации: строить продукт, 
+                            сделать pivot или искать новую идею.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pricing" id="pricing">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Полностью бесплатно</h2>
+                    <p class="section-subtitle">Open source инструмент для валидации ваших идей</p>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Open Source</h3>
+                    <div class="price">$0</div>
+                    <p class="price-label">Навсегда бесплатно</p>
+
+                    <ul class="features-list">
+                        <li>Reddit, Twitter & LinkedIn scraping</li>
+                        <li>Полный исходный код на Python</li>
+                        <li>8 скриптов валидации</li>
+                        <li>Мультиплатформенный анализ</li>
+                        <li>Детальная документация</li>
+                        <li>Примеры использования</li>
+                        <li>Validation framework (PDF)</li>
+                        <li>Quick start мастер настройки</li>
+                        <li>Без ограничений по использованию</li>
+                        <li>Community support</li>
+                    </ul>
+
+                    <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">
+                        Скачать с GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Продукт</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Возможности</a></li>
+                        <li><a href="#how-it-works">Как работает</a></li>
+                        <li><a href="#pricing">Цена</a></li>
+                        <li><a href="#">Документация</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Ресурсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">GitHub Repository</a></li>
+                        <li><a href="#">Validation Framework</a></li>
+                        <li><a href="#">Примеры использования</a></li>
+                        <li><a href="#">API документация</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Discord сервер</a></li>
+                        <li><a href="#">Reddit r/SaaS</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Contributing Guide</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Обучение</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Quick Start Guide</a></li>
+                        <li><a href="#">Video Tutorials</a></li>
+                        <li><a href="#">Best Practices</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Reddit SaaS Validator • Open Source Project • Built with ❤️ for entrepreneurs</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cursor glow effect
+        const cursorGlow = document.getElementById('cursorGlow');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Stats counter animation
+        const animateValue = (element, start, end, duration) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                element.textContent = current + (element.dataset.suffix || '');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        };
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards
+        document.querySelectorAll('.feature-card, .step, .stat-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

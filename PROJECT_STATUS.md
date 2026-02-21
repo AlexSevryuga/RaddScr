@@ -1,193 +1,140 @@
-# Reddit SaaS Validator - Project Status
+# 📊 Reddit SaaS Validator - Текущий статус
 
-## ✅ Что готово
-
-### 📄 Landing Page
-- ✅ `index.html` - полноценный landing page
-- ✅ Responsive design
-- ✅ Animations и effects
-- ✅ CTA buttons
-- ✅ Features showcase
-- ✅ Pricing section
-- ✅ Ready to deploy на Vercel
-
-### 📚 Документация
-- ✅ `README.md` - основной README с quick start
-- ✅ `docs/MULTIPLATFORM.md` - детальная документация по мультиплатформенному сбору
-- ✅ `DEPLOY.md` - инструкции по deployment
-- ✅ `PROJECT_STATUS.md` - этот файл
-
-### 🛠️ Инфраструктура
-- ✅ `requirements.txt` - Python зависимости
-- ✅ `.env.example` - шаблон для credentials
-- ✅ `.gitignore` - настроен
-- ✅ `package.json` - для Vercel CLI
-- ✅ `quick_start.py` - интерактивная настройка
-- ✅ `validator.py` - CLI interface (заглушка)
-
-### 📁 Структура проекта
-- ✅ `src/` - папка для Python модулей
-- ✅ `docs/` - документация
-- ✅ `examples/` - папка для примеров
+**Дата:** 2026-02-21 22:08 GMT+5
 
 ---
 
-## 🚧 Что нужно доделать
+## ✅ ЧТО РАБОТАЕТ:
 
-### 🐍 Python скрипты (Core functionality)
+### 1️⃣ **Инфраструктура на Render:**
+- ✅ **Backend API:** https://raddscr-vfxb.onrender.com
+- ✅ **PostgreSQL:** подключена (dpg-d6ctfp8gjchc73e44r7g-a)
+- ✅ **Redis:** настроен (redis://red-d6ctju95pdvs739lo750:6379)
+- ✅ **GitHub:** https://github.com/AlexSevryuga/RaddScr
+- ✅ **Auto-deploy:** работает (при каждом push)
 
-**Высокий приоритет:**
-- [ ] `src/reddit_scraper.py` - Reddit API integration
-- [ ] `src/twitter_scraper.py` - Twitter/X API integration
-- [ ] `src/linkedin_scraper.py` - LinkedIn scraping
-- [x] `src/multiplatform_validator.py` - Combined analysis ✅ ГОТОВ
-- [ ] `src/scorer.py` - Scoring logic (встроен в validator)
-- [ ] `src/pain_detector.py` - Pain points detection (встроен в каждый scraper)
+### 2️⃣ **API Endpoints (FastAPI):**
+```
+✅ GET  /              - API root
+✅ GET  /health        - Health check
+✅ POST /init-db       - Database initialization
+✅ GET  /test          - Test endpoint
+✅ POST /auth/register - User registration
+✅ POST /auth/login    - User login
+✅ GET  /auth/me       - Current user info
+✅ GET  /projects      - List projects
+✅ POST /projects      - Create project
+✅ GET  /projects/{id} - Get project
+✅ POST /projects/{id}/validate - Trigger validation
+```
 
-**Средний приоритет:**
-- [ ] `src/competitor_analyzer.py` - Competitor analysis
-- [ ] `src/report_generator.py` - PDF/Markdown reports
-- [ ] `src/cache_manager.py` - Кеширование результатов
+**Swagger UI:** https://raddscr-vfxb.onrender.com/docs
 
-**Низкий приоритет:**
-- [ ] `src/sentiment_analyzer.py` - NLP sentiment analysis
-- [ ] `src/trend_analyzer.py` - Trend detection
-- [ ] `src/audience_profiler.py` - Target audience analysis
-
-### 📝 Примеры использования
-- [ ] `examples/reddit_example.py`
-- [ ] `examples/twitter_example.py`
-- [ ] `examples/linkedin_example.py`
-- [ ] `examples/multiplatform_example.py`
-
-### 🧪 Тестирование
-- [ ] `tests/` - Unit tests
-- [ ] `tests/test_reddit_scraper.py`
-- [ ] `tests/test_twitter_scraper.py`
-- [ ] `tests/test_scorer.py`
-
-### 🎨 Frontend доработки
-- [ ] `style.css` - извлечь из inline стилей в index.html
-- [ ] `script.js` - извлечь из inline JS в index.html
-- [ ] Добавить Google Analytics
-- [ ] Добавить форму подписки на newsletter
+### 3️⃣ **Основные компоненты:**
+- ✅ FastAPI (REST API)
+- ✅ SQLAlchemy (ORM)
+- ✅ JWT Authentication (python-jose)
+- ✅ Password hashing (bcrypt)
+- ✅ Database models (User, Project, Analysis)
 
 ---
 
-## 🚀 Roadmap
+## ⚠️ ТЕКУЩИЕ ПРОБЛЕМЫ:
 
-### Phase 1: MVP (1-2 недели)
-1. ✅ Landing page
-2. ✅ Базовая документация
-3. ⏳ Reddit scraper (priority #1)
-4. ⏳ Basic scoring
-5. ⏳ CLI interface
+### 1️⃣ **Регистрация падает с 500 Internal Server Error**
+**Причина:** Скорее всего проблема с БД таблицами или импортом email модуля
 
-**Цель:** Можно валидировать идеи через Reddit
+**Следующие шаги:**
+1. Проверить логи в Render Dashboard
+2. Убрать зависимость от email в auth роутере
+3. Протестировать напрямую через /init-db
 
-### Phase 2: Multi-platform (2-3 недели)
-1. ⏳ Twitter scraper
-2. ⏳ LinkedIn scraper
-3. ⏳ Объединённый анализ
-4. ⏳ Improved scoring
+### 2️⃣ **Celery worker не запущен**
+**Результат:** Валидация проектов не будет работать автоматически
 
-**Цель:** Полноценная мультиплатформенная валидация
+**Решение:** Пока можно запускать валидацию синхронно или добавить Celery worker позже
 
-### Phase 3: Advanced Features (3-4 недели)
-1. ⏳ Competitor analysis
-2. ⏳ Sentiment analysis
-3. ⏳ Trend detection
-4. ⏳ PDF reports
+### 3️⃣ **Stripe и Email не настроены**
+**Результат:** Нет платежей и email уведомлений
 
-**Цель:** Production-ready инструмент
-
-### Phase 4: Polish (1-2 недели)
-1. ⏳ Unit tests
-2. ⏳ Error handling
-3. ⏳ Performance optimization
-4. ⏳ Documentation polish
-
-**Цель:** Готов к Open Source релизу
+**Решение:** Добавить API ключи в Environment Variables позже
 
 ---
 
-## 🎯 Immediate Next Steps
+## 🎯 ЧТО ОСТАЛОСЬ СДЕЛАТЬ:
 
-**Сейчас нужно сделать:**
+### Критично (для MVP):
+1. ✅ ~~Деплой на Render~~ - ГОТОВО
+2. ✅ ~~Database подключение~~ - ГОТОВО
+3. ✅ ~~API endpoints~~ - ГОТОВО
+4. ⚠️ **Фикс регистрации** - В ПРОЦЕССЕ
+5. ⏳ **Тестирование auth flow** (register → login → create project)
+6. ⏳ **Упрощённая валидация** (без Celery, синхронно)
 
-1. **Deploy landing page на Vercel** (5 минут)
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   # Push to GitHub
-   # Deploy on Vercel
-   ```
+### Важно (после MVP):
+- Celery worker для async валидации
+- Frontend деплой (Vercel/Netlify)
+- Stripe интеграция
+- Email уведомления (Resend)
+- Полноценный скрапинг (Reddit/Twitter/LinkedIn)
 
-2. **Создать Reddit scraper** (2-3 часа)
-   - Базовый функционал
-   - API integration
-   - Error handling
-
-3. **Создать scoring logic** (1-2 часа)
-   - 5 метрик
-   - Формула оценки
-   - Thresholds
-
-4. **Интегрировать в CLI** (1 час)
-   - Реальная валидация
-   - Output formatting
-   - Results export
-
-**После этого будет working MVP!**
+### Опционально:
+- Rate limiting
+- Caching (Redis)
+- Monitoring (Sentry)
+- Analytics (PostHog)
+- PDF export отчётов
 
 ---
 
-## 📊 Метрики успеха
+## 📈 ПРОГРЕСС:
 
-### MVP ready когда:
-- ✅ Landing page deployed
-- [ ] Reddit scraping работает
-- [ ] Scoring работает
-- [ ] CLI выдаёт реальные результаты
-- [ ] Можно валидировать идею end-to-end
+```
+Backend Infrastructure:  ████████████████████ 100%
+Database Setup:          ████████████████████ 100%
+API Endpoints:           ████████████████████ 100%
+Authentication:          ████████████░░░░░░░░  65%
+Projects CRUD:           ████████████████░░░░  80%
+Validation Engine:       ████░░░░░░░░░░░░░░░░  20%
+Frontend:                ░░░░░░░░░░░░░░░░░░░░   0%
 
-### Production ready когда:
-- [ ] Все 3 платформы работают
-- [ ] Unit tests покрытие >70%
-- [ ] Документация complete
-- [ ] Error handling robust
-- [ ] Performance acceptable (<5 мин на валидацию)
+OVERALL:                 ████████████░░░░░░░░  60%
+```
 
 ---
 
-## 🤝 Contributing
+## 🔥 СЛЕДУЮЩИЙ ШАГ:
 
-После релиза MVP:
-- [ ] Создать CONTRIBUTING.md
-- [ ] Setup GitHub Issues templates
-- [ ] Create roadmap на GitHub Projects
-- [ ] Написать Code of Conduct
+**Фикс регистрации** - устранить 500 ошибку и протестировать полный auth flow:
+1. Register → получить user
+2. Login → получить JWT токен
+3. Create project → сохранить в БД
+4. Get project → вернуть данные
 
----
-
-## 📝 Notes
-
-**Технические решения:**
-- Python 3.8+ required
-- Async/await для параллельных запросов (future)
-- pandas для data analysis
-- colorama для CLI colors
-- praw для Reddit API
-- tweepy для Twitter API
-- linkedin-api + Selenium для LinkedIn
-
-**Limitations:**
-- Rate limits всех API
-- LinkedIn blocking risk
-- Twitter Free tier limits
+**ETA:** 15-20 минут
 
 ---
 
-**Last updated:** 2026-02-21  
-**Status:** 🚧 In Development (MVP Phase)
+## 💰 Текущие расходы:
+
+**Render Free Tier:**
+- Web Service: $0/месяц (ограничение: спит через 15 мин)
+- PostgreSQL: $0/месяц (256 MB)
+- Redis: $0/месяц (25 MB)
+
+**TOTAL: $0/месяц** 🎉
+
+---
+
+## 📝 Примечания:
+
+- Все изменения автоматически деплоятся при push в main
+- Логи доступны в Render Dashboard
+- API документация всегда актуальна: `/docs`
+- Проект в Git: все сохранено и версионировано
+
+---
+
+**Статус:** 🟡 В процессе разработки  
+**Готовность к запуску:** 60%  
+**Блокеры:** Регистрация (500 error)

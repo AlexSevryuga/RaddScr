@@ -17,38 +17,41 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/register", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
-async def register(user_data: schemas.UserRegister, db: Session = Depends(get_db)):
+def register(user_data: schemas.UserRegister, db: Session = Depends(get_db)):
     """Register new user"""
-    # Check if user exists
-    existing_user = db.query(models.User).filter(models.User.email == user_data.email).first()
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
+    try:
+        # Check if user exists
+        existing_user = db.query(models.User).filter(models.User.email == user_data.email).first()
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered"
+            )
+        
+        # Create new user
+        hashed_password = auth.get_password_hash(user_data.password)
+        new_user = models.User(
+            email=user_data.email,
+            hashed_password=hashed_password,
+            full_name=user_data.full_name,
+            subscription_tier=models.SubscriptionTier.FREE
         )
+        
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        
+        return new_user
     
-    # Create new user
-    hashed_password = auth.get_password_hash(user_data.password)
-    new_user = models.User(
-        email=user_data.email,
-        hashed_password=hashed_password,
-        full_name=user_data.full_name,
-        subscription_tier=models.SubscriptionTier.FREE
-    )
-    
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    
-    # Send welcome email (fire and forget)
-    if EMAIL_AVAILABLE and send_welcome_email:
-        try:
-            await send_welcome_email(new_user.email, new_user.full_name)
-        except Exception as e:
-            # Log error but don't fail registration
-            print(f"Failed to send welcome email: {e}")
-    
-    return new_user
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        print(f"Registration error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create user: {str(e)}"
+        )
 
 
 @router.post("/login", response_model=schemas.Token)

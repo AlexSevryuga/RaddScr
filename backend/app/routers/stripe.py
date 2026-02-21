@@ -16,8 +16,9 @@ from ..email import send_payment_failed_email, send_subscription_cancelled_email
 
 router = APIRouter(prefix="/stripe", tags=["stripe"])
 
-# Initialize Stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
+# Initialize Stripe (only if configured)
+if settings.STRIPE_SECRET_KEY:
+    stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 @router.post("/create-checkout-session")

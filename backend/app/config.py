@@ -12,16 +12,16 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     
     # Stripe
-    STRIPE_SECRET_KEY: str
-    STRIPE_PUBLISHABLE_KEY: str
-    STRIPE_WEBHOOK_SECRET: str
+    STRIPE_SECRET_KEY: Optional[str] = None
+    STRIPE_PUBLISHABLE_KEY: Optional[str] = None
+    STRIPE_WEBHOOK_SECRET: Optional[str] = None
     STRIPE_PRICE_ID_STARTER: Optional[str] = None
     STRIPE_PRICE_ID_PRO: Optional[str] = None
     STRIPE_PRICE_ID_ENTERPRISE: Optional[str] = None
     
     # Email
-    RESEND_API_KEY: str
-    FROM_EMAIL: str
+    RESEND_API_KEY: Optional[str] = None
+    FROM_EMAIL: Optional[str] = "noreply@example.com"
     
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"

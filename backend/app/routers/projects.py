@@ -3,7 +3,14 @@ from sqlalchemy.orm import Session
 from typing import List
 from .. import models, schemas, auth
 from ..database import get_db
-from ..tasks import run_validation
+
+# Try to import Celery tasks (optional)
+try:
+    from ..tasks import run_validation
+    TASKS_AVAILABLE = True
+except ImportError:
+    TASKS_AVAILABLE = False
+    run_validation = None
 
 router = APIRouter(prefix="/projects", tags=["projects"])
 
@@ -40,12 +47,15 @@ def create_project(
     db.commit()
     db.refresh(new_project)
     
-    # Trigger Celery task for async analysis
-    try:
-        run_validation.delay(new_project.id)
-    except Exception as e:
-        print(f"Failed to queue validation task: {e}")
-        # Don't fail the request if task queueing fails
+    # Trigger Celery task for async analysis (if available)
+    if TASKS_AVAILABLE and run_validation:
+        try:
+            run_validation.delay(new_project.id)
+        except Exception as e:
+            print(f"Failed to queue validation task: {e}")
+            # Don't fail the request if task queueing fails
+    else:
+        print("⚠️ Celery tasks not available - validation will not run automatically")
     
     return new_project
 
@@ -114,6 +124,12 @@ def trigger_validation(
     # Reset status and trigger validation
     project.status = models.AnalysisStatus.PENDING
     db.commit()
+    
+    if not TASKS_AVAILABLE or not run_validation:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Validation service not available - Celery not configured"
+        )
     
     try:
         task = run_validation.delay(project_id)

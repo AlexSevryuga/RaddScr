@@ -3,6 +3,7 @@ RaddScr API - Incremental deployment
 """
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 import os
 
 # Try to import optional modules
@@ -28,6 +29,12 @@ app = FastAPI(
     title="Reddit SaaS Validator API",
     description="API for validating SaaS ideas via Reddit, Twitter, and LinkedIn analysis",
     version="1.0.0"
+)
+
+# Session middleware (required for OAuth)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SECRET_KEY", "default-secret-key-change-in-production")
 )
 
 # CORS

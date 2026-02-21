@@ -65,8 +65,9 @@ def root():
         "status": "running",
         "features": {
             "database": DB_AVAILABLE,
-            "auth": DB_AVAILABLE,
-            "projects": DB_AVAILABLE
+            "auth": ROUTERS_AVAILABLE,
+            "projects": ROUTERS_AVAILABLE,
+            "oauth_google": os.getenv("GOOGLE_CLIENT_ID") is not None
         }
     }
 
@@ -84,7 +85,8 @@ def health_check():
         "database": db_host if db_host else "not_configured",
         "redis": "configured" if os.getenv("REDIS_URL") else "not_configured",
         "features": {
-            "database": DB_AVAILABLE
+            "database": DB_AVAILABLE,
+            "oauth_google": os.getenv("GOOGLE_CLIENT_ID") is not None
         }
     }
 
@@ -96,10 +98,12 @@ def test():
         "env_vars": {
             "database": bool(os.getenv("DATABASE_URL")),
             "redis": bool(os.getenv("REDIS_URL")),
-            "secret_key": bool(os.getenv("SECRET_KEY"))
+            "secret_key": bool(os.getenv("SECRET_KEY")),
+            "google_oauth": bool(os.getenv("GOOGLE_CLIENT_ID"))
         },
         "modules": {
-            "database": DB_AVAILABLE
+            "database": DB_AVAILABLE,
+            "routers": ROUTERS_AVAILABLE
         }
     }
 
@@ -117,3 +121,21 @@ def initialize_database():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database init failed: {str(e)}")
+
+@app.post("/reset-db")
+def reset_database():
+    """Drop and recreate all tables (WARNING: DELETES ALL DATA!)"""
+    if not DB_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Database modules not available")
+    
+    try:
+        # Drop all tables
+        Base.metadata.drop_all(bind=engine)
+        # Recreate all tables
+        Base.metadata.create_all(bind=engine)
+        return {
+            "status": "success",
+            "message": "Database reset successfully. All tables recreated with new schema."
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database reset failed: {str(e)}")
